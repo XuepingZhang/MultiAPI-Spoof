@@ -47,7 +47,7 @@ pip install -r requirements.txt
 ---
 
 ## 🚀 Quick Start
-
+The following examples are training scripts intended for cluster environments such as Slurm. Please modify the script according to your own environment and replace all paths with those specific to your setup.
 **Pretrained XLSR**
 
 The pretrained model XLSR can be found at this [link](https://dl.fbaipublicfiles.com/fairseq/wav2vec/xlsr2_300m.pt).

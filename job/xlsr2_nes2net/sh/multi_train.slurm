@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH -e /work/xz464/zxp/new_dataset_experiment_dkucc/aasist-main/job/api_tracing/log/api_tracing.err
-#SBATCH -o /work/xz464/zxp/new_dataset_experiment_dkucc/aasist-main/job/api_tracing/log/api_tracing.out
-#SBATCH -J api
+#SBATCH -e log/xlsr2_nes2net_few_dataset.err
+#SBATCH -o log/xlsr2_nes2net_few_dataset.out
+#SBATCH -J xlsr2_nes2net_few_dataset
 #SBATCH -p l20-gpu
-#SBATCH -N 1                    # 使用两个节点
+#SBATCH -N 1
+#SBATCH --mem=256g
 #SBATCH --ntasks-per-node=8      # 每节点 8 个任务
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:8
-#SBATCH --exclusive
 #SBATCH --export=ALL
 
 module load OpenMPI/4.1.8-gpu
@@ -15,8 +15,9 @@ module load cuda/12.6
 module load gcc/12.4.0
 module use $HOME/my_modules
 module load numactl/1.0
-source /dkucc/home/xz464/anaconda3/bin/activate
-conda activate Antispoofing
+
+source /public/anaconda3/bin/activate # Change it to your own path
+conda activate multiapi-spoof
 
 
 
@@ -42,6 +43,6 @@ done
 
 
 mpirun -np $num_GPU --allow-run-as-root --bind-to none -hostfile `pwd`/hostfile-dl \
-  sh /work/xz464/zxp/new_dataset_experiment_dkucc/aasist-main/job/api_tracing/sh/single.sh $dist_url
+  sh sh/single.sh $dist_url
 
 
