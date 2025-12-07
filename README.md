@@ -48,36 +48,29 @@ pip install -r requirements.txt
 
 ## 🚀 Quick Start
 
+**Pretrained XLSR**
+
+The pretrained model XLSR can be found at this [link](https://dl.fbaipublicfiles.com/fairseq/wav2vec/xlsr2_300m.pt).
+
 ### 🟢 Anti-Spoofing Training
 
 ```bash
-python train_antispoof.py \
-    --data_dir /path/to/MultiAPI-Spoof \
-    --model nes2net_la \
-    --feature_extractor xlsr_300m \
-    --epochs 50 \
-    --batch_size 32 \
-    --lr 5e-6
+cd job/xlsr2_nes2net_ATT
+sbatch sh/multi_train.slurm
 ```
 
 ### 🟢 API Tracing Training
 
 ```bash
-python train_api_tracing.py \
-    --data_dir /path/to/MultiAPI-Spoof \
-    --feature_extractor xlsr_300m \
-    --epochs 50 \
-    --batch_size 32 \
-    --lr 1e-5
+cd job/api_tracing
+sbatch sh/multi_train.slurm
 ```
 
 ### 🟢 Inference / Evaluation
 
 ```bash
-python evaluate.py \
-    --data_dir /path/to/MultiAPI-Spoof \
-    --model_path /path/to/checkpoint.pt \
-    --task antispoof
+cd job/xlsr2_nes2net_ATT
+sbatch sh/multi_eval.slurm
 ```
 
 ---
