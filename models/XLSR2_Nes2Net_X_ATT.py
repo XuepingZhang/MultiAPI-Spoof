@@ -277,7 +277,7 @@ class Nested_Res2Net_TDNN(nn.Module):
             self.pooling = ASTP(in_dim=input_channel, bottleneck_dim=128, global_context_att=False)
             self.fc = nn.Linear(2048, n_output_logits)
 
-        # 假设你已有 self.Nes_ratio, self.C 初始化
+
         self.local_block_attn = LocalWindowAttention(num_blocks=self.Nes_ratio,
                                                  block_channels=self.C,
                                                  window_size=3,  # W=3 -> center + 1 neighbor each side

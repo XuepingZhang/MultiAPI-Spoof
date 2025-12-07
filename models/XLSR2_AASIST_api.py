@@ -57,7 +57,7 @@ class LayerSelfAttention(nn.Module):
         super().__init__()
         self.self_attn = nn.MultiheadAttention(embed_dim=hidden_dim,
                                                num_heads=num_heads,
-                                               batch_first=True)  # batch在前
+                                               batch_first=True)
 
     def forward(self, layerResult):
         """
@@ -73,9 +73,8 @@ class LayerSelfAttention(nn.Module):
 
         att_out, att_weights = self.self_attn(layery, layery, layery)
         # att_out: (b, L, d)
-        # att_weights: (b, L, L) 每个 token(层)对其它层的注意力权重
+        # att_weights: (b, L, L)
 
-        # 可以再加一层池化，得到最终全局表示
         pooled = att_out.mean(dim=1)   # (b, d)
 
         return att_out, pooled, att_weights
@@ -97,7 +96,7 @@ class Model(nn.Module):
 
     def forward(self, x, Freq_aug=False):
 
-        x_ssl_feat, layerResult = self.ssl_model.extract_feat(x.squeeze(-1)) #layerresult = [(x,z),24个] x(201,1,1024) z(1,201,201)
+        x_ssl_feat, layerResult = self.ssl_model.extract_feat(x.squeeze(-1)) #layerresult = [(x,z),24] x(201,1,1024) z(1,201,201)
 
         att_out, pooled, _ = self.layer_att(layerResult)
 
@@ -106,7 +105,7 @@ class Model(nn.Module):
         x = self.fc3(x)
         x = self.selu(x)
         output = self.logsoftmax(x)
-        dummy = torch.zeros(x.size(0), device=x.device)  # 与 batch 对齐
+        dummy = torch.zeros(x.size(0), device=x.device)
         return pooled, x
 
 

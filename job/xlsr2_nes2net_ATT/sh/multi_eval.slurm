@@ -5,7 +5,7 @@
 #SBATCH -p l20-gpu
 #SBATCH -N 1
 #SBATCH --mem=256g
-#SBATCH --ntasks-per-node=8      # 每节点 8 个任务
+#SBATCH --ntasks-per-node=8
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:8
 #SBATCH --export=ALL

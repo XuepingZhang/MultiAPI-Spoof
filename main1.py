@@ -51,18 +51,18 @@ def main(args: argparse.Namespace) -> None:
 
     dist.init_process_group(backend=args.dist_backend, init_method=args.dist_url,
                             world_size=args.world_size, rank=args.rank, timeout=datetime.timedelta(seconds=600))
-    # ----- 固定随机种子 -----
+
     seed = 1234
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     np.random.seed(seed)
     random.seed(seed)
 
-    # 确保 cudnn 可复现
+
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-    # 同步所有进程，确保种子一致
+
     dist.barrier()
 
     if args.rank == 0:
@@ -133,7 +133,7 @@ def main(args: argparse.Namespace) -> None:
         )
 
 
-        # 保存本 rank 的分数结果
+
         os.makedirs("./temp", exist_ok=True)
         save_path_rank = f"./temp/eval_score_rank{args.rank}.txt"
         with open(save_path_rank, "w") as f:
@@ -142,7 +142,7 @@ def main(args: argparse.Namespace) -> None:
 
 
         dist.barrier()
-        # ---------- 合并 txt & 计算指标 ----------
+
         if args.rank == 0:
             with open(eval_score_path, "w") as fout:
                 for i in range(args.world_size):
@@ -194,7 +194,7 @@ def main(args: argparse.Namespace) -> None:
             logging.info("Start training epoch{:03d}".format(epoch))
         running_loss = train_epoch(trn_loader, model, optimizer, device,
                                    scheduler, config)
-        # 同步所有GPU的 loss
+
         loss_tensor = torch.tensor(running_loss, device=device)
         dist.all_reduce(loss_tensor, op=dist.ReduceOp.SUM)
         loss_tensor /= dist.get_world_size()
@@ -434,7 +434,7 @@ def produce_evaluation_file_ddp(
         for file_name, score, y in zip(file_names, batch_score, batch_y):
             results.append((file_name, float(score), label_map[int(y)]))
 
-        # 可选限制，调试用
+
         # if len(results) > 100:
         #     break
 
@@ -457,7 +457,7 @@ def produce_evaluation_file_ddp_save(
     label_map = {1: 'bonafide', 0: 'spoof'}
 
     results = []
-    spoof_features = []   # 存储所有 label=0 的特征
+    spoof_features = []
 
     for batch_x, batch_y, file_names in tqdm(data_loader, total=len(data_loader),
                                              desc=type, dynamic_ncols=True, ascii=True):
@@ -466,17 +466,17 @@ def produce_evaluation_file_ddp_save(
             h, batch_out = model(batch_x)  # h shape: [B, D]
             batch_score = (batch_out[:, 1]).data.cpu().numpy().ravel()
 
-        # 遍历 batch
+
         for i, (file_name, score, y) in enumerate(zip(file_names, batch_score, batch_y)):
             results.append((file_name, float(score), label_map[int(y)]))
             if int(y) == 0:  # spoof
                 spoof_features.append(h[i].detach().cpu().numpy())
 
-        # 可选调试
+        #
         # if len(results) > 100:
         #     break
 
-    # 转为 numpy (N_spoof, D)，如果没有 spoof 样本就返回空数组
+
     if len(spoof_features) > 0:
         spoof_features_np = np.stack(spoof_features, axis=0)
     else:
@@ -632,53 +632,6 @@ if __name__ == "__main__":
                         type=str,
                         default=None,
                         help="path to checkpoint to resume training")
-    ##===================================================Rawboost data augmentation ======================================================================#
-
-    parser.add_argument('--algo', type=int, default=0,
-                        help='Rawboost algos discriptions. 0: No augmentation 1: LnL_convolutive_noise, 2: ISD_additive_noise, 3: SSI_additive_noise, 4: series algo (1+2+3), \
-                              5: series algo (1+2), 6: series algo (1+3), 7: series algo(2+3), 8: parallel algo(1,2) .default=0]')
-
-    # LnL_convolutive_noise parameters
-    parser.add_argument('--nBands', type=int, default=5,
-                        help='number of notch filters.The higher the number of bands, the more aggresive the distortions is.[default=5]')
-    parser.add_argument('--minF', type=int, default=20,
-                        help='minimum centre frequency [Hz] of notch filter.[default=20] ')
-    parser.add_argument('--maxF', type=int, default=8000,
-                        help='maximum centre frequency [Hz] (<sr/2)  of notch filter.[default=8000]')
-    parser.add_argument('--minBW', type=int, default=100,
-                        help='minimum width [Hz] of filter.[default=100] ')
-    parser.add_argument('--maxBW', type=int, default=1000,
-                        help='maximum width [Hz] of filter.[default=1000] ')
-    parser.add_argument('--minCoeff', type=int, default=10,
-                        help='minimum filter coefficients. More the filter coefficients more ideal the filter slope.[default=10]')
-    parser.add_argument('--maxCoeff', type=int, default=100,
-                        help='maximum filter coefficients. More the filter coefficients more ideal the filter slope.[default=100]')
-    parser.add_argument('--minG', type=int, default=0,
-                        help='minimum gain factor of linear component.[default=0]')
-    parser.add_argument('--maxG', type=int, default=0,
-                        help='maximum gain factor of linear component.[default=0]')
-    parser.add_argument('--minBiasLinNonLin', type=int, default=5,
-                        help=' minimum gain difference between linear and non-linear components.[default=5]')
-    parser.add_argument('--maxBiasLinNonLin', type=int, default=20,
-                        help=' maximum gain difference between linear and non-linear components.[default=20]')
-    parser.add_argument('--N_f', type=int, default=5,
-                        help='order of the (non-)linearity where N_f=1 refers only to linear components.[default=5]')
-
-    # ISD_additive_noise parameters
-    parser.add_argument('--P', type=int, default=10,
-                        help='Maximum number of uniformly distributed samples in [%].[defaul=10]')
-    parser.add_argument('--g_sd', type=int, default=2,
-                        help='gain parameters > 0. [default=2]')
-
-    # SSI_additive_noise parameters
-    parser.add_argument('--SNRmin', type=int, default=10,
-                        help='Minimum SNR value for coloured additive noise.[defaul=10]')
-    parser.add_argument('--SNRmax', type=int, default=40,
-                        help='Maximum SNR value for coloured additive noise.[defaul=40]')
-
-    ##===================================================Rawboost data augmentation ======================================================================#
-
-
 
 
 

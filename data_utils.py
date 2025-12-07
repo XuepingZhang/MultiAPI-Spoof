@@ -102,10 +102,10 @@ def pad(x, max_len=64600):
 
 def pad_random(x: np.ndarray, max_len: int = 64600):
 
-    if x.ndim > 1:  # 多通道
-        x = x.mean(axis=0)  # 转为单通道
+    if x.ndim > 1:
+        x = x.mean(axis=0)
 
-    x = np.squeeze(x)  # 保证x为一维numpy数组
+    x = np.squeeze(x)
     x_len = x.shape[0]
     if x_len == 0:
         return np.zeros(max_len, dtype=np.float32)
@@ -142,7 +142,7 @@ class Dataset_(Dataset):
                 self.full_path_list.append(full_path)
                 self.label_list.append(self.label_map[label_str])
 
-        # 初始化缓存
+
         self.cached_data = {} if self.use_cache else None
 
     def __len__(self):
@@ -169,7 +169,7 @@ class Dataset_(Dataset):
             waveform = pad_random(waveform, self.cut)
             x_inp = Tensor(waveform)
             if self.use_cache:
-                self.cached_data[filepath] = x_inp  # 缓存进内存
+                self.cached_data[filepath] = x_inp
         return x_inp, y, filepath
 
 

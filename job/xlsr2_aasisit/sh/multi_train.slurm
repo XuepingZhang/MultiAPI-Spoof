@@ -3,8 +3,8 @@
 #SBATCH -o log/xlsr2_aasisit_few_dataset.out
 #SBATCH -J xlsr2_aasisit_few_dataset
 #SBATCH -p l20-gpu
-#SBATCH -N 1                    # 使用两个节点
-#SBATCH --ntasks-per-node=8      # 每节点 8 个任务
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=8
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:8
 #SBATCH --mem=256g

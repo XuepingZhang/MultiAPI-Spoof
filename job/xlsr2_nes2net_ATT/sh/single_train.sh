@@ -12,7 +12,7 @@ world_size=$OMPI_COMM_WORLD_SIZE
 node_rank=$OMPI_COMM_WORLD_NODE_RANK
 export CUDA_VISIBLE_DEVICES=$local_rank
 
-# 随机端口，避免冲突
+
 port=33673
 (
 while true; do
