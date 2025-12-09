@@ -1,6 +1,7 @@
 
 # 🎤 MultiAPI-Spoof: Multi-API Audio Anti-Spoofing Dataset & Nes2Net-LA
 
+[📄 Paper on arXiv](https://arxiv.org/abs/2512.07352)
 [🔗 Project Code](https://github.com/XuepingZhang/MultiAPI-Spoof) 
 [📥 Dataset Download on Google Drive](https://drive.google.com/file/d/1d1MCt6ZYKv90XZic4_KvOD67RDoi2m5-/view?usp=sharing)
 [📂 Dataset Details & Audio Examples](https://xuepingzhang.github.io/MultiAPI-Spoof-Dataset/)
@@ -100,6 +101,14 @@ sbatch sh/multi_eval.slurm
 If you use this code or dataset, please cite:
 
 ```
-
+@misc{zhang2025multiapispoofmultiapidataset,
+      title={MultiAPI Spoof: A Multi-API Dataset and Local-Attention Network for Speech Anti-spoofing Detection}, 
+      author={Xueping Zhang and Zhenshan Zhang and Yechen Wang and Linxi Li and Liwei Jin and Ming Li},
+      year={2025},
+      eprint={2512.07352},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD},
+      url={https://arxiv.org/abs/2512.07352}, 
+}
 ```
 
