@@ -96,6 +96,7 @@ sbatch sh/multi_eval.slurm
 
 ---
 
+
 ## 📖 Citation
 
 If you use this code or dataset, please cite:
@@ -111,4 +112,16 @@ If you use this code or dataset, please cite:
       url={https://arxiv.org/abs/2512.07352}, 
 }
 ```
+## Contact
+
+If you have any questions, contact [xueping.zhang@dukekunshan.edu.cn](xueping.zhang@dukekunshan.edu.cn)
+
+---
+## 🔏 License
+
+ The code is released under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.en) license.
+
+---
+
+
 
