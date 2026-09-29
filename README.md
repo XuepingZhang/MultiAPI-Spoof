@@ -3,7 +3,7 @@
 
 [📄 Paper on arXiv](https://arxiv.org/abs/2512.07352)
 [🔗 Project Code](https://github.com/XuepingZhang/MultiAPI-Spoof) 
-[📥 Dataset Download on Google Drive](https://drive.google.com/file/d/1d1MCt6ZYKv90XZic4_KvOD67RDoi2m5-/view?usp=sharing)
+[📥 Dataset Download](https://ofspectrum.com/api/download)
 [📂 Dataset Details & Audio Examples](https://xuepingzhang.github.io/MultiAPI-Spoof-Dataset/)
 [💾 Pretrained Models (XLSR-Nes2Net-LA)](https://huggingface.co/XuepingZhang/XLSR-Nes2Net-LA/blob/main/epoch_5_1.422.pth)
 
