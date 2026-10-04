@@ -2,9 +2,13 @@
 # 🎤 MultiAPI-Spoof: Multi-API Audio Anti-Spoofing Dataset & Nes2Net-LA
 
 [📄 Paper on arXiv](https://arxiv.org/abs/2512.07352)
+
 [🔗 Project Code](https://github.com/XuepingZhang/MultiAPI-Spoof) 
-[📥 Dataset Download](https://ofspectrum.com/api/download)
+
+[📥 Dataset Download](https://ofspectrum.com/api/download) or [🤗 Download on Huggingface](https://huggingface.co/datasets/XuepingZhang/MultiAPI_Spoof)
+
 [📂 Dataset Details & Audio Examples](https://xuepingzhang.github.io/MultiAPI-Spoof-Dataset/)
+
 [💾 Pretrained Models (XLSR-Nes2Net-LA)](https://huggingface.co/XuepingZhang/XLSR-Nes2Net-LA/blob/main/epoch_5_1.422.pth)
 
 ---
